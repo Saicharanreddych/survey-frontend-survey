@@ -8,21 +8,29 @@
                 max-width="40"
                 contain
             ></v-img>
-            <v-app-bar-title  >Tutorial</v-app-bar-title>
+            <v-app-bar-title  >Survey</v-app-bar-title>
             <v-spacer></v-spacer>
+            
             <v-toolbar-items>
+               <v-btn 
+                    variant="text"
+                    @click="Home"
+                    >
+                  Home
+                </v-btn>
+                <!--
                 <v-btn 
                     variant="text"
-                    @click="goList"
+                    @click="Login"
                     >
-                  List
+                  Login
                 </v-btn>
                 <v-btn 
                     variant="text"
-                    @click="goAdd"
+                    @click="Signup"
                     >
-                  Add
-                </v-btn>
+                  Sign up
+                </v-btn>-->
             </v-toolbar-items>
       </v-app-bar>
       <v-main >
@@ -42,11 +50,11 @@ export default {
     logo,
   }),
   methods: {
-    goAdd() {
-      this.$router.push({ name: 'add' });
+    Home() {
+      this.$router.push({ name: 'home' });
     },
-    goList() {
-      this.$router.push({ name: 'tutorials' });
+    Signup() {
+      this.$router.push({ name: 'signup' });
     }
   },
 
