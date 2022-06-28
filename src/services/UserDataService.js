@@ -4,6 +4,9 @@ class UserDataService{
     {
         return http.post("/user",data);
     }
+    get(id) {
+        return http.get(`/user/${id}`);
+      }
 }
 export default new UserDataService();
 

@@ -1,4 +1,15 @@
 
+
+
+
+
+
+
+
+
+
+
+
 import { createWebHistory, createRouter } from "vue-router";
 const routes =  [
   {
@@ -14,9 +25,9 @@ const routes =  [
     props: true
   },
   {
-    path: "/add",
-    name: "add",
-    component: () => import("./views/AddTutorial.vue")
+    path: "/login",
+    name: "login",
+    component: () => import("./views/Login.vue")
   },
   {
     path: "/signup",
