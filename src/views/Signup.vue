@@ -62,7 +62,7 @@ export default {
         rules: {
           required: value => !!value || 'Required.',
           min: v => v.length >= 8 || 'Min 8 characters',
-          emailMatch: () => (`The email and password you entered don't match`),
+          
     }};
   },
   methods: {
@@ -70,12 +70,14 @@ export default {
       var data = {
         email: this.user.email,
         firstname: this.user.firstname,
-        lastname:this.user.lastname
+        lastname:this.user.lastname,
+        password:this.user.password
       };
+     
       UserDataService.create(data)
         .then(response => {
           this.user.id = response.data.id;
-          
+          localStorage.setItem("username",response.data.fname);
           console.log("add "+response.data);
           this.$router.push({ name: 'welcome' });
         })
