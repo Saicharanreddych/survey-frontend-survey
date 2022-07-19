@@ -3,7 +3,7 @@ import Home from "./components/Home.vue";
 import Login from "./components/Login.vue";
 import Register from "./components/Register.vue";
 import Survey from "./components/Survey.vue";
-
+import UserOperations from "./components/UserOperations.vue"
 // lazy-loaded
 const Profile = () => import("./components/Profile.vue")
 const Admin = () => import("./components/Admin.vue")
@@ -44,7 +44,11 @@ const routes = [
     name: "survey",
     component: Survey,
   },
- 
+  {
+    path: "/userOp",
+    name: "userOp",
+    component: UserOperations,
+  },
   
 ];
 
