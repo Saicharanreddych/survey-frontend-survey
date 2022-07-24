@@ -23,7 +23,12 @@
             <Field name="password" type="password" class="form-control" />
             <ErrorMessage name="password" class="error-feedback" />
           </div>
-
+          <div v-if="!Admin" class="form-group">
+            <label for="role">Role:</label>
+            <input name="admin" type="Radio" @change="onChange($event)" v-model="role"/>Admin &nbsp;
+            <input name="admin" type="Radio" @change="onChange($event)" value="user"/>User &nbsp;
+            
+          </div>
           <div class="form-group">
             <button class="btn btn-primary btn-block" :disabled="loading">
               <span
@@ -50,7 +55,7 @@
 <script>
 import { Form, Field, ErrorMessage } from "vee-validate";
 import * as yup from "yup";
-
+import UserDataService from "../services/UserDataService"
 export default {
   name: "Register",
   components: {
@@ -76,11 +81,14 @@ export default {
         .min(6, "Must be at least 6 characters!")
         .max(40, "Must be maximum 40 characters!"),
     });
+    
 
     return {
       successful: false,
       loading: false,
+      Admin:false,
       message: "",
+      role:"admin",
       schema,
     };
   },
@@ -93,9 +101,18 @@ export default {
     if (this.loggedIn) {
       this.$router.push("/profile");
     }
+    this.checkAdmin();
   },
   methods: {
+     onChange(event) {
+              var role = event.target.value;
+              console.log(role);
+          },
     handleRegister(user) {
+      if(!this.Admin)
+      {
+        user.roles = "admin";
+      }
       this.message = "";
       this.successful = false;
       this.loading = true;
@@ -117,6 +134,16 @@ export default {
           this.loading = false;
         }
       );
+    },
+    checkAdmin(){
+      UserDataService.check().then(response =>{
+        console.log(this.response);
+        this.Admin = true;
+      })
+      .catch( e =>{
+        this.Admin = false;
+      }
+      )
     },
   },
 };
