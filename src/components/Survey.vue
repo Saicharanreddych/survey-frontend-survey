@@ -68,8 +68,8 @@ export default {
         SurveyView
     },
   methods: {
-   goEdit(tutorial) {
-      this.$router.push({ name: 'edit', params: { id: tutorial.id } });
+    goEdit(survey) {
+      this.$router.push({ name: 'edit', params: { id: survey.id } });
     },
     goView(survey) {
       this.$router.push({ name: 'view', params: { id: survey.id } });

@@ -1,3 +1,4 @@
+
 import http from "../http-common";
 class SurveyDataService{
     create(data)
@@ -18,7 +19,9 @@ class SurveyDataService{
     {
         return http.get("/surveys/getsurveys");
     }
-   
+    update(id, data) {
+        return http.put(`/surveys/${id}`, data);
+      }
       delete(id) {
         return http.delete(`/surveys/${id}`);
       }

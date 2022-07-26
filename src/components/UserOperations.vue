@@ -83,12 +83,26 @@ export default {
         });
     },
     retrieveUsers() {
+      var adminId;
+      UserDataService.check()
+      .then(response =>{
+        
+        adminId = response.data[0].userId;
+  
       UserDataService.getAll()
         .then(response => {
+          console.log(response.data.length);
+          for(var i=0;i<response.data.length;i++)
+          {
+               if(response.data[i].id == adminId)
+                  response.data.splice(i,1);
+          }
+          console.log(response.data);
+           
           this.users = response.data;
           console.log("hello");
           console.log(this.users);
-        })
+        })})
         .catch(e => {
           this.message = e.response.data.message;
         });

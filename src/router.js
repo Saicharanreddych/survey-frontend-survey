@@ -6,7 +6,7 @@ import Register from "./components/Register.vue";
 import Survey from "./components/Survey.vue";
 import UserOperations from "./components/UserOperations.vue"
 import AddSurvey from "./views/AddSurvey.vue"
-
+import EditSurvey from "./views/EditSurvey.vue"
 import ViewSurvey from "./views/ViewSurvey.vue"
 // lazy-loaded
 const Profile = () => import("./components/Profile.vue")
@@ -58,7 +58,11 @@ const routes = [
     name: "addsurvey",
     component: AddSurvey,
   },
- 
+  {
+    path: "/edit",
+    name: "edit",
+    component: EditSurvey,
+  },
   {
     path: "/view",
     name: "view",
