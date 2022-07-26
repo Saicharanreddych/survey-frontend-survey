@@ -8,5 +8,9 @@ class UserDataService{
     {
         return http.get("surveys/users/all");
     }
+    check()
+    {
+        return http.get("surveys/checkadmin");
+    }
 }
 export default new UserDataService();

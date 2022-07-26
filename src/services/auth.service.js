@@ -26,7 +26,8 @@ class AuthService {
     return axios.post(API_URL + 'surveys/user', {
       username: user.username,
       email: user.email,
-      password: user.password
+      password: user.password,
+      roles: user.roles
     });
   }
 }
