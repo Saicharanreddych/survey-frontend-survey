@@ -8,5 +8,8 @@ class SurveyDataService{
     {
         return http.get("/surveys/getsurveys");
     }
+    findByName(name) {
+        return http.get(`/surveys/getsurveys?name=${name}`);
+      }
 }
 export default new SurveyDataService();
