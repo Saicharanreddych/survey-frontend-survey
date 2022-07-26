@@ -68,17 +68,18 @@ export default {
         SurveyView
     },
   methods: {
-    goEdit(tutorial) {
+   goEdit(tutorial) {
       this.$router.push({ name: 'edit', params: { id: tutorial.id } });
     },
     goView(survey) {
       this.$router.push({ name: 'view', params: { id: survey.id } });
     },
-    goDelete(tutorial) {
-      TutorialDataService.delete(tutorial.id)
+    goDelete(survey) {
+      SurveyDataService.delete(survey.id)
         .then( () => {
-    
-          this.retrieveTutorials()
+          this.retrieveSurveys()
+          SurveyDataService.deleteQuestions(survey.id)
+          .then(() =>{})
         })
         .catch(e => {
           this.message = e.response.data.message;
