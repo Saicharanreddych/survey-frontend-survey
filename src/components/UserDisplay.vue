@@ -7,15 +7,15 @@
   
   <v-col  cols="9"
         sm="1">
-      <v-btn size="x-small" icon="mdi-pencil" @click="updateTutorial"/>
+      <v-btn size="x-small" icon="mdi-pencil" @click="updateUser"/>
   </v-col>
   <v-col  cols="9"
         sm="1">
-      <v-btn size="x-small" icon="mdi-format-list-bulleted-type" @click="viewTutorial"/>
+      <v-btn size="x-small" icon="mdi-format-list-bulleted-type" @click="viewUser"/>
   </v-col>
   <v-col  cols="9"
         sm="1">
-      <v-btn size="x-small" icon="mdi-trash-can" @click="deleteTutorial"/>
+      <v-btn size="x-small" icon="mdi-trash-can" @click="deleteUser"/>
   </v-col>
 </v-row>
 </template>
@@ -32,14 +32,14 @@ export default {
   },
   methods: {
 
-    deleteTutorial() {
-      this.$emit("deleteTutorial");
+    deleteUser() {
+      this.$emit("deleteUser");
     },
-    updateTutorial() {
-      this.$emit("updateTutorial");
+    updateUser() {
+      this.$emit("updateUser");
     },
-    viewTutorial() {
-      this.$emit("viewTutorial");
+    viewUser() {
+      this.$emit("viewUser");
     }
   }
 };

@@ -36,13 +36,17 @@
         v-for="user in users"
         :key="user.id"
         :user="user"
-        @deleteTutorial="goDelete(user)"
-        @updateTutorial="goEdit(user)"
-        @viewTutorial="goView(user)"
+        @deleteUser="goDelete(user)"
+        @updateUser="goEdit(user)"
+        @viewUser="goView(user)"
     />
- 
-  <v-btn  @click="removeAllTutorials">
-    Remove All
+  <br><br>
+  <v-btn  @click="removeAllUsers">
+    Remove All Users
+  </v-btn>
+  &nbsp;
+   <v-btn  @click="addUser">
+    Add an user
   </v-btn>
    
   </div>
@@ -75,12 +79,16 @@ export default {
     goDelete(tutorial) {
       TutorialDataService.delete(tutorial.id)
         .then( () => {
-    
+
           this.retrieveTutorials()
         })
         .catch(e => {
           this.message = e.response.data.message;
         });
+    },
+    addUser() {
+      this.$router.push({name:'addUser'});
+
     },
     retrieveUsers() {
       var adminId;
@@ -91,25 +99,22 @@ export default {
   
       UserDataService.getAll()
         .then(response => {
-          console.log(response.data.length);
+          
           for(var i=0;i<response.data.length;i++)
           {
                if(response.data[i].id == adminId)
                   response.data.splice(i,1);
           }
-          console.log(response.data);
+          
            
           this.users = response.data;
-          console.log("hello");
-          console.log(this.users);
+          
         })})
         .catch(e => {
           this.message = e.response.data.message;
         });
     },
-    createSurvey(){
-        this.$router.push({ name: 'addsurvey' });
-    },
+   
     refreshList() {
       this.retrieveTutorials();
       this.currentTutorial = null;
