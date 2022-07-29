@@ -10,7 +10,7 @@
         </v-col>
         <v-col col="12" sm="10">
             <v-text-field density="compact" clearable
-              v-model="title"/>
+              v-model="name"/>
         </v-col> 
       </v-row>
       <v-row>
@@ -32,18 +32,18 @@
             <span class="text-h6">Delete</span>
         </v-col>
       </v-row>
-      <TutorialDisplay
-        v-for="tutorial in tutorials"
-        :key="tutorial.id"
-        :tutorial="tutorial"
-        @deleteTutorial="goDelete(tutorial)"
-        @updateTutorial="goEdit(tutorial)"
-        @viewTutorial="goView(tutorial)"
-    />
+      <SurveyView
+        v-for="survey in surveys"
+        :key="survey.id"
+        :survey="survey"
+        @deleteSurvey="goDelete(survey )"
+        @updateSurvey="goEdit(survey )"
+        @viewSurvey="goView(survey )"
+    /><br>
  <v-btn  @click="createSurvey">
     Add a Survey
   </v-btn>&nbsp;
-  <v-btn  @click="removeAllTutorials">
+  <v-btn  @click="removeAllSurveys">
     Remove All
   </v-btn>
    
@@ -52,7 +52,7 @@
 
 <script>
 import SurveyDataService from "../services/SurveyDataService";
-import TutorialDisplay from '@/components/TutorialDisplay.vue';
+import SurveyView from '@/components/SurveyView.vue';
 export default {
   name: "survey",
   data() {
@@ -60,12 +60,12 @@ export default {
       surveys: [],
       currentSurvey: null,
       currentIndex: -1,
-      title: "",
+      name: "",
       message : "Search, Edit or Delete Surveys"
     };
   },
   components: {
-        TutorialDisplay
+        SurveyView
     },
   methods: {
     goEdit(tutorial) {
@@ -98,16 +98,16 @@ export default {
         this.$router.push({ name: 'addsurvey' });
     },
     refreshList() {
-      this.retrieveTutorials();
-      this.currentTutorial = null;
+      this.retrieveSurveys();
+      this.currentSurvey = null;
       this.currentIndex = -1;
     },
-    setActiveTutorial(tutorial, index) {
-      this.currentSurvey = tutorial;
-      this.currentIndex = tutorial ? index : -1;
+    setActiveSurvey(survey, index) {
+      this.currentSurvey = survey;
+      this.currentIndex = survey ? index : -1;
     },
-    removeAllTutorials() {
-      TutorialDataService.deleteAll()
+    removeAllSurveys() {
+      SurveyDataService.deleteAll()
         .then(response => {
           console.log(response.data);
           this.refreshList();
@@ -117,12 +117,11 @@ export default {
         });
     },
     
-    searchTitle() {
-      SurveyDataService.findByTitle(this.title)
+    searchSurvey() {
+      SurveyDataService.findByName(this.name)
         .then(response => {
           this.surveys = response.data;
-          this.setActiveTutorial(null);
-          
+          this.setActiveSurvey(null);
         })
         .catch(e => {
           this.message = e.response.data.message;
