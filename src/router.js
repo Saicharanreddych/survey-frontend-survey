@@ -1,9 +1,12 @@
+
 import { createWebHistory, createRouter } from "vue-router";
 import Home from "./components/Home.vue";
 import Login from "./components/Login.vue";
 import Register from "./components/Register.vue";
 import Survey from "./components/Survey.vue";
 import UserOperations from "./components/UserOperations.vue"
+import AddSurvey from "./views/AddSurvey.vue"
+
 // lazy-loaded
 const Profile = () => import("./components/Profile.vue")
 const Admin = () => import("./components/Admin.vue")
@@ -49,6 +52,12 @@ const routes = [
     name: "userOp",
     component: UserOperations,
   },
+  {
+    path: "/addsurvey",
+    name: "addsurvey",
+    component: AddSurvey,
+  },
+ 
   
 ];
 
