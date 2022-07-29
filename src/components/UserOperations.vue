@@ -1,31 +1,24 @@
 <template>
-
-    <h1>Tutorial List</h1>
-    <h4>{{ message }}</h4>
-  
+  <div class="container">
+      <br><br>
       <v-row >
-        <v-col  cols="12"
-        sm="2">
-          <v-btn color = "success"
-            @click="searchTitle"
-          >
-            Search
+        <v-col  cols="12" sm="2">
+          <v-btn class="btn-outline-dark"
+            @click="searchSurvey">
+            Search Users
           </v-btn>
         </v-col>
         <v-col col="12" sm="10">
             <v-text-field density="compact" clearable
-              v-model="title"/>
+              v-model="name"/>
         </v-col> 
       </v-row>
       <v-row>
         <v-col  cols="9"
               sm="2">
-            <span class="text-h6">Title</span>
+            <span class="text-h6">User name</span>
         </v-col>
-        <v-col  cols="9"
-              sm="4">
-            <span class="text-h6">Description</span>
-        </v-col>
+        
         <v-col  cols="9"
               sm="1">
             <span class="text-h6">Edit</span>
@@ -39,35 +32,42 @@
             <span class="text-h6">Delete</span>
         </v-col>
       </v-row>
-      <TutorialDisplay
-        v-for="tutorial in tutorials"
-        :key="tutorial.id"
-        :tutorial="tutorial"
-        @deleteTutorial="goDelete(tutorial)"
-        @updateTutorial="goEdit(tutorial)"
-        @viewTutorial="goView(tutorial)"
+      <UserDisplay
+        v-for="user in users"
+        :key="user.id"
+        :user="user"
+        @deleteUser="goDelete(user)"
+        @updateUser="goEdit(user)"
+        @viewUser="goView(user)"
     />
- 
-  <v-btn  @click="removeAllTutorials">
-    Remove All
+  <br><br>
+  <v-btn  @click="removeAllUsers">
+    Remove All Users
   </v-btn>
+  &nbsp;
+   <v-btn  @click="addUser">
+    Add an user
+  </v-btn>
+   
+  </div>
 </template>
+
 <script>
-import TutorialDataService from "../services/TutorialDataService";
-import TutorialDisplay from '@/components/TutorialDisplay.vue';
+import UserDataService from "../services/UserDataService";
+import UserDisplay from '@/components/UserDisplay.vue';
 export default {
-  name: "tutorials-list",
+  name: "userOp",
   data() {
     return {
-      tutorials: [],
-      currentTutorial: null,
+      users: [],
+      currentSurvey: null,
       currentIndex: -1,
-      title: "",
-      message : "Search, Edit or Delete Tutorials"
+      name: "",
+      message : "Search, Delete users"
     };
   },
   components: {
-        TutorialDisplay
+        UserDisplay
     },
   methods: {
     goEdit(tutorial) {
@@ -79,30 +79,49 @@ export default {
     goDelete(tutorial) {
       TutorialDataService.delete(tutorial.id)
         .then( () => {
-    
+
           this.retrieveTutorials()
         })
         .catch(e => {
           this.message = e.response.data.message;
         });
     },
-    retrieveTutorials() {
-      TutorialDataService.getAll()
+    addUser() {
+      this.$router.push({name:'addUser'});
+
+    },
+    retrieveUsers() {
+      var adminId;
+      UserDataService.check()
+      .then(response =>{
+        
+        adminId = response.data[0].userId;
+  
+      UserDataService.getAll()
         .then(response => {
-          this.tutorials = response.data;
           
-        })
+          for(var i=0;i<response.data.length;i++)
+          {
+               if(response.data[i].id == adminId)
+                  response.data.splice(i,1);
+          }
+          
+           
+          this.users = response.data;
+          
+        })})
         .catch(e => {
           this.message = e.response.data.message;
         });
     },
+   
     refreshList() {
       this.retrieveTutorials();
       this.currentTutorial = null;
       this.currentIndex = -1;
     },
     setActiveTutorial(tutorial, index) {
-      this.currentTutorial = tutorial;
+      this.currentSurvey = tutorial;
       this.currentIndex = tutorial ? index : -1;
     },
     removeAllTutorials() {
@@ -117,9 +136,9 @@ export default {
     },
     
     searchTitle() {
-      TutorialDataService.findByTitle(this.title)
+      UserDataService.findByName(this.title)
         .then(response => {
-          this.tutorials = response.data;
+          this.surveys = response.data;
           this.setActiveTutorial(null);
           
         })
@@ -129,10 +148,7 @@ export default {
     }
   },
   mounted() {
-    this.retrieveTutorials();
+    this.retrieveUsers();
   }
 };
 </script>
-<style>
-
-</style>

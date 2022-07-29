@@ -1,12 +1,14 @@
-import { createApp } from 'vue'
-import App from './App.vue'
+import { createApp } from "vue";
+import App from "./App.vue";
+import router from "./router";
 import vuetify from './plugins/vuetify'
-import { loadFonts } from './plugins/webfontloader'
-import router from './router'
-
-loadFonts()
-
+import store from "./store";
+import "bootstrap";
+import "bootstrap/dist/css/bootstrap.min.css";
+import { FontAwesomeIcon } from './plugins/font-awesome'
 createApp(App)
-  .use(vuetify)
   .use(router)
-  .mount('#app')
+  .use(store)
+  .use(vuetify)
+  .component("font-awesome-icon", FontAwesomeIcon)
+  .mount("#app");
