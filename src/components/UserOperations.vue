@@ -4,7 +4,7 @@
       <v-row >
         <v-col  cols="12" sm="2">
           <v-btn class="btn-outline-dark"
-            @click="searchSurvey">
+            @click="searchUser">
             Search Users
           </v-btn>
         </v-col>
@@ -60,7 +60,7 @@ export default {
   data() {
     return {
       users: [],
-      currentSurvey: null,
+      currentUser: null,
       currentIndex: -1,
       name: "",
       message : "Search, Delete users"
@@ -116,13 +116,13 @@ export default {
     },
    
     refreshList() {
-      this.retrieveTutorials();
-      this.currentTutorial = null;
+      this.retrieveUsers();
+      this.currentUser = null;
       this.currentIndex = -1;
     },
-    setActiveTutorial(tutorial, index) {
-      this.currentSurvey = tutorial;
-      this.currentIndex = tutorial ? index : -1;
+    setActiveUser(user, index) {
+      this.currentUser = user;
+      this.currentIndex = user ? index : -1;
     },
     removeAllTutorials() {
       TutorialDataService.deleteAll()
@@ -135,16 +135,31 @@ export default {
         });
     },
     
-    searchTitle() {
-      UserDataService.findByName(this.title)
+    searchUser() {
+
+      var adminId;
+      UserDataService.check()
+      .then(response =>{
+        
+        adminId = response.data[0].userId;
+  
+      UserDataService.findByName(this.name)
         .then(response => {
-          this.surveys = response.data;
-          this.setActiveTutorial(null);
           
-        })
+          for(var i=0;i<response.data.length;i++)
+          {
+               if(response.data[i].id == adminId)
+                  response.data.splice(i,1);
+          }
+          
+           
+          this.users = response.data;
+          this.setActiveUser(null);
+        })})
         .catch(e => {
           this.message = e.response.data.message;
         });
+      
     }
   },
   mounted() {

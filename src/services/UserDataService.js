@@ -12,5 +12,8 @@ class UserDataService{
     {
         return http.get("surveys/checkadmin");
     }
+    findByName(name) {
+        return http.get(`/surveys/users/all?name=${name}`);
+      }
 }
 export default new UserDataService();
