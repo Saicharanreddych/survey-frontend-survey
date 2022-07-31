@@ -17,6 +17,11 @@
         sm="1">
       <v-btn size="x-small" icon="mdi-trash-can" @click="deleteUser"/>
   </v-col>
+
+  <v-col  cols="9"
+        sm="1">
+      <v-btn size="x-small" icon="mdi-check" @click="assignSurvey"/>
+  </v-col>
 </v-row>
 </template>
 
@@ -40,7 +45,10 @@ export default {
     },
     viewUser() {
       this.$emit("viewUser");
-    }
+    },
+    assignSurvey() {
+      this.$emit("assignSurvey");
+    },
   }
 };
 </script>

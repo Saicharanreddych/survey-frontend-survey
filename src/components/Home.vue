@@ -27,7 +27,7 @@
 </template>
 
 <script>
-import UserService from "../services/user.service";
+
 import homeimage from '../assets/homeimage.jpg';
 export default {
   name: "Home",
