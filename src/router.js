@@ -1,44 +1,105 @@
 import { createWebHistory, createRouter } from "vue-router";
-const routes =  [
+import Home from "./components/Home.vue";
+import Login from "./components/Login.vue";
+import Register from "./components/Register.vue";
+import Survey from "./components/Survey.vue";
+import UserOperations from "./components/UserOperations.vue"
+import AddSurvey from "./views/AddSurvey.vue"
+import EditSurvey from "./views/EditSurvey.vue"
+import ViewSurvey from "./views/ViewSurvey.vue"
+import AddUser from "./views/AddUser.vue"
+import ViewUser from "./views/ViewUser.vue"
+import UserView from "./views/UserView.vue"
+import AssignSurvey from "./views/AssignSurvey.vue"
+// lazy-loaded
+const Profile = () => import("./components/Profile.vue")
+const Admin = () => import("./components/Admin.vue")
+//const BoardModerator = () => import("./components/BoardModerator.vue")
+//const BoardUser = () => import("./components/BoardUser.vue")
+
+const routes = [
   {
     path: "/",
-    alias: "/tutorials",
-    name: "tutorials",
-    component: () => import("./views/TutorialsList.vue")
+    name: "home",
+    component: Home,
   },
   {
-    path: "/edit/:id",
+    path: "/home",
+    component: Home,
+  },
+  {
+    path: "/login",
+    component: Login,
+  },
+  {
+    path: "/register",
+    component: Register,
+  },
+  {
+    path: "/profile",
+    name: "profile",
+    // lazy-loaded
+    component: Profile,
+  },
+  {
+    path: "/admin",
+    name: "admin",
+    component: Admin,
+  },
+  {
+    path: "/survey",
+    name: "survey",
+    component: Survey,
+  },
+  {
+    path: "/userOp",
+    name: "userOp",
+    component: UserOperations,
+  },
+  {
+    path: "/addsurvey",
+    name: "addsurvey",
+    component: AddSurvey,
+  },
+  {
+    path: "/edit",
     name: "edit",
-    component: () => import("./views/EditTutorial.vue"),
-    props: true
-  },
-  {
-    path: "/add",
-    name: "add",
-    component: () => import("./views/AddTutorial.vue")
+    component: EditSurvey,
   },
   {
     path: "/view",
     name: "view",
-    component: () => import("./views/ViewTutorial.vue"),
-    props: true
+    component: ViewSurvey,
+  },
+
+  {
+    path: "/addUser",
+    name: "addUser",
+    component: AddUser,
+  },
+
+  {
+    path: "/viewuser",
+    name: "viewuser",
+    component: ViewUser,
+  },
+
+  {
+    path: "/assignsurvey",
+    name: "assignsurvey",
+    component: AssignSurvey,
   },
   {
-    path: "/addLesson",
-    name: "addLesson",
-    component: () => import("./views/AddLesson.vue"),
-    props: true
+    path: "/user",
+    name: "user",
+    component: UserView,
   },
-  {
-    path: "/editLesson",
-    name: "editLesson",
-    component: () => import("./views/EditLesson.vue"),
-    props: true
-  }
+
+  
 ];
+
 const router = createRouter({
-  base: process.env.NODE_ENV === 'development' ? '/' : '/tutorial-frontend-1/',
-  history: createWebHistory(process.env.BASE_URL),
+  history: createWebHistory(),
   routes,
 });
 
