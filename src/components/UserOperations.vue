@@ -19,10 +19,7 @@
             <span class="text-h6">User name</span>
         </v-col>
         
-        <v-col  cols="9"
-              sm="1">
-            <span class="text-h6">Edit</span>
-        </v-col>
+        
         <v-col  cols="9"
               sm="1">
             <span class="text-h6">View</span>
@@ -41,7 +38,7 @@
         :key="user.id"
         :user="user"
         @deleteUser="goDelete(user)"
-        @updateUser="goEdit(user)"
+        
         @viewUser="goView(user)"
         @assignSurvey = "goAssign(user)"
     />
@@ -75,9 +72,7 @@ export default {
         UserDisplay
     },
   methods: {
-    goEdit(tutorial) {
-      this.$router.push({ name: 'edit', params: { id: tutorial.id } });
-    },
+    
     goView(tutorial) {
       this.$router.push({ name: 'viewuser', params: { id: tutorial.id } });
     },
@@ -113,10 +108,7 @@ export default {
                if(response.data[i].id == adminId)
                   response.data.splice(i,1);
           }
-          
-           
           this.users = response.data;
-          
         })})
         .catch(e => {
           this.message = e.response.data.message;
@@ -159,8 +151,6 @@ export default {
                if(response.data[i].id == adminId)
                   response.data.splice(i,1);
           }
-          
-           
           this.users = response.data;
           this.setActiveUser(null);
         })})

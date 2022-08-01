@@ -46,6 +46,10 @@
   <v-btn  @click="removeAllSurveys">
     Remove All
   </v-btn>
+  &nbsp;
+  <v-btn  @click="back()">
+    Back
+  </v-btn>
    
   </div>
 </template>
@@ -84,6 +88,10 @@ export default {
         .catch(e => {
           this.message = e.response.data.message;
         });
+    },
+    back()
+    {
+      this.$router.push({ name: 'admin'});
     },
     retrieveSurveys() {
       SurveyDataService.getAll()

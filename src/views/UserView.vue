@@ -13,7 +13,7 @@
             <tr v-for = "survey in surveys">
                 <td>{{survey.surveyname}}</td>
                 <td v-if="survey.status">
-                  <v-btn>Take this survey</v-btn>
+                  <v-btn @click="submitSurvey(survey.id)">Take this survey</v-btn>
                 </td>
                 <td v-if="!survey.status">
                   Already submitted.
@@ -62,7 +62,11 @@ export default {
     back(){
      this.$router.push({ name: 'userOp' });
     },
-
+    
+    submitSurvey(surveyid)
+    {
+      this.$router.push({name:'retrievesurvey',params:{id:surveyid,userid:this.$route.params.userid}});
+    },
     
     
     async retrieveSurveys() {
@@ -77,9 +81,11 @@ export default {
            }
            else
            {
+              console.log(userid);
               this.surveys[i] = survey.data;
               this.questions = await SurveyDataService.getAllQuestions(this.surveys[i].id); 
-              this.answers = await SurveyDataService.getAnswers(this.questions.data[0].id);
+              this.answers = await SurveyDataService.getAnswers(this.questions.data[0].id,userid);
+              console.log(this.answers.data);
               if(this.answers.data.length == 0)
               {
                 this.surveys[i].status  = true;
@@ -87,19 +93,24 @@ export default {
               else
               {
                 this.surveys[i].status = false;
-              }
-
-              
+              }  
            }
           
         }
-        
-        console.log(this.surveys);
-            
+          
         },
   },
   async mounted() {
+    if(this.$route.params.userid == undefined)
+    {
+      
+      this.$router.push({name:'home'});
+    }
+    else
+    {
     await this.retrieveSurveys();
+    }
+    
   }
 };
 </script>

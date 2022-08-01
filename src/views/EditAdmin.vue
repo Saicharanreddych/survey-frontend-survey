@@ -1,16 +1,16 @@
 <template>
-    <h1>Edit survey</h1>
+    <h1>Edit username</h1>
     <h4>{{ message }}</h4>
     <v-form>
        <v-text-field
-            label="Survey name"
-            v-model="survey.surveyname"
+            label="User name"
+            v-model="user.username"
         />
         
         <v-row justify="center">
             <v-col col="2"> </v-col>
             <v-col col="2">
-                <v-btn color="success" @click="updateSurvey()"
+                <v-btn color="success" @click="updateAdmin()"
                     >Save</v-btn
                 >
             </v-col>
@@ -22,23 +22,25 @@
     </v-form>
 </template>
 <script>
-import SurveyDataService from "../services/SurveyDataService";
+import UserDataService from "../services/UserDataService";
 export default {
   name: "edit-survey",
   props: ['id'],
   data() {
     return {
-      survey: {},
+      user: {
+      },
       message: "Enter data and click save"
       
     };
   },
   methods: {
-    retrieveSurvey() {
-      var surveyid = this.$route.params.id;
-      SurveyDataService.getSurvey(surveyid)
+    retrieveUser() {
+      var userid = this.$route.params.id;
+      UserDataService.getUser(userid)
         .then(response => {
-          this.survey= response.data;
+          this.user= response.data;
+          
         })
         .catch(e => {
           this.message = e.response.data.message;
@@ -46,25 +48,34 @@ export default {
 
     },
 
-    updateSurvey() {
+    updateAdmin() {
       var data = {
-        surveyname: this.survey.surveyname
+        username: this.user.username
       };
-      SurveyDataService.update(this.survey.id,data)
+      
+      UserDataService.update(this.user.id,data)
         .then(response => {
-          this.survey.id = response.data.id;
-          this.$router.push({ name: 'survey' });
+          UserDataService.getUser(this.user.id)
+          .then(response =>{
+          
+          this.user = response.data;
+          this.user.roles = ["ROLE_ADMIN"];
+          
+          localStorage.setItem("user",JSON.stringify(this.user));
+          this.$router.push({ name: 'profile' });
+          })
+          
         })
         .catch(e => {
           this.message = e.response.data.message;
         });
     },
     cancel(){
-        this.$router.push({ name: 'survey' });
+        this.$router.push({ name: 'profile' });
     }
   },
     mounted() {
-    this.retrieveSurvey();
+    this.retrieveUser();
   }
 }
 

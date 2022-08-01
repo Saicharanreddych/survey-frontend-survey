@@ -11,6 +11,9 @@ import AddUser from "./views/AddUser.vue"
 import ViewUser from "./views/ViewUser.vue"
 import UserView from "./views/UserView.vue"
 import AssignSurvey from "./views/AssignSurvey.vue"
+import RetrieveSurvey from "./views/RetrieveSurvey.vue"
+import EditUser from "./views/EditUser.vue"
+import EditAdmin from "./views/EditAdmin.vue"
 // lazy-loaded
 const Profile = () => import("./components/Profile.vue")
 const Admin = () => import("./components/Admin.vue")
@@ -93,6 +96,24 @@ const routes = [
     path: "/user",
     name: "user",
     component: UserView,
+  },
+
+  {
+    path: "/retrievesurvey",
+    name: "retrievesurvey",
+    component: RetrieveSurvey,
+  },
+
+  {
+    path: "/edituser",
+    name: "edituser",
+    component: EditUser,
+  },
+
+  {
+    path: "/editadmin",
+    name: "editadmin",
+    component: EditAdmin,
   },
 
   

@@ -8,6 +8,14 @@ class SurveyDataService{
     {
         return http.post(`/surveys/insert/${surveyid}`,data);
     }
+    insertanswers(data)
+    {
+        return http.post(`/surveys/insertanswers`,data);
+    }
+    insertresponse(data)
+    {
+        return http.post(`/surveys/insertresponse`,data);
+    }
     getSurvey(id) {
         return http.get(`/surveys/${id}`);
       }
@@ -38,8 +46,8 @@ class SurveyDataService{
       getAssigned(userid) {
         return http.get(`/surveys/assign/${userid}`);
       }
-      getAnswers(questionid) {
-        return http.get(`/surveys/answer/${questionid}`);
+      getAnswers(questionid,userid) {
+        return http.get(`/surveys/answer/${questionid}/${userid}`);
       }
 }
 export default new SurveyDataService();
