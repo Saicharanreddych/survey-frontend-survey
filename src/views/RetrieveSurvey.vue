@@ -183,6 +183,10 @@ export default {
     }
   },
     mounted() {
+    if(this.$route.params.userid == undefined)
+    {
+      this.$router.push({name:'user'});
+    }
     this.retrieveSurveyQuestions();
     
   }

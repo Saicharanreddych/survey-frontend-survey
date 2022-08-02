@@ -6,10 +6,6 @@
   </v-col>
   
   
-  <v-col  cols="8"
-        sm="1">
-      <v-btn size="x-small" icon="mdi-trash-can" @click="deleteQuestion"/>
-  </v-col>
 </v-row>
 </template>
 
@@ -28,7 +24,9 @@ export default {
     deleteQuestion() {
       this.$emit("deleteQuestion");
     },
-    
+    updateQuestion() {
+      this.$emit("updateQuestion");
+    }
   }
 };
 </script>

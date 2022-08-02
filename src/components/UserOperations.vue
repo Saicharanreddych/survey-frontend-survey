@@ -38,30 +38,32 @@
         :key="user.id"
         :user="user"
         @deleteUser="goDelete(user)"
-        
         @viewUser="goView(user)"
         @assignSurvey = "goAssign(user)"
     />
   <br><br>
-  <v-btn  @click="removeAllUsers">
-    Remove All Users
-  </v-btn>
-  &nbsp;
+  
+  
    <v-btn  @click="addUser">
     Add an user
+  </v-btn>&nbsp;
+   <v-btn  @click="back">
+    Back
   </v-btn>
-   
+
   </div>
 </template>
 
 <script>
 import UserDataService from "../services/UserDataService";
+import SurveyDataService from "../services/SurveyDataService";
 import UserDisplay from '@/components/UserDisplay.vue';
 export default {
   name: "userOp",
   data() {
     return {
       users: [],
+      answerresponse:[],
       currentUser: null,
       currentIndex: -1,
       name: "",
@@ -73,24 +75,31 @@ export default {
     },
   methods: {
     
-    goView(tutorial) {
-      this.$router.push({ name: 'viewuser', params: { id: tutorial.id } });
+    goView(user) {
+      this.$router.push({ name: 'viewuser', params: { id: user.id } });
     },
-    goDelete(tutorial) {
-      TutorialDataService.delete(tutorial.id)
-        .then( () => {
-
-          this.retrieveTutorials()
-        })
-        .catch(e => {
-          this.message = e.response.data.message;
-        });
+    async goDelete(user) {
+      
+      var response = await SurveyDataService.getUserResponses(user.id);
+      
+      for(var i=0;i<response.data.length;i++)
+      {
+        
+        await SurveyDataService.deleteAnswer(response.data[i].answerId);
+      }
+      await SurveyDataService.deleteAssignedSurveys(user.id);
+      await UserDataService.delete(user.id);
+      this.retrieveUsers();
     },
     goAssign(user){
       this.$router.push({name:'assignsurvey',params:{id:user.id}});
     },
     addUser() {
       this.$router.push({name:'addUser'});
+
+    },
+    back() {
+      this.$router.push({name:'admin'});
 
     },
     retrieveUsers() {
@@ -124,16 +133,7 @@ export default {
       this.currentUser = user;
       this.currentIndex = user ? index : -1;
     },
-    removeAllTutorials() {
-      TutorialDataService.deleteAll()
-        .then(response => {
-          console.log(response.data);
-          this.refreshList();
-        })
-        .catch(e => {
-          this.message = e.response.data.message;
-        });
-    },
+    
     
     searchUser() {
 

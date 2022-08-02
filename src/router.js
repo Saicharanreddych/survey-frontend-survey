@@ -14,6 +14,7 @@ import AssignSurvey from "./views/AssignSurvey.vue"
 import RetrieveSurvey from "./views/RetrieveSurvey.vue"
 import EditUser from "./views/EditUser.vue"
 import EditAdmin from "./views/EditAdmin.vue"
+import ViewResponse from "./views/ViewResponse.vue"
 // lazy-loaded
 const Profile = () => import("./components/Profile.vue")
 const Admin = () => import("./components/Admin.vue")
@@ -114,6 +115,12 @@ const routes = [
     path: "/editadmin",
     name: "editadmin",
     component: EditAdmin,
+  },
+
+  {
+    path: "/viewresponse",
+    name: "viewresponse",
+    component: ViewResponse,
   },
 
   
