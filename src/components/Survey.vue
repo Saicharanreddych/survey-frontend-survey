@@ -71,8 +71,8 @@ export default {
     goEdit(tutorial) {
       this.$router.push({ name: 'edit', params: { id: tutorial.id } });
     },
-    goView(tutorial) {
-      this.$router.push({ name: 'view', params: { id: tutorial.id } });
+    goView(survey) {
+      this.$router.push({ name: 'view', params: { id: survey.id } });
     },
     goDelete(tutorial) {
       TutorialDataService.delete(tutorial.id)
@@ -133,5 +133,3 @@ export default {
   }
 };
 </script>
-
-
