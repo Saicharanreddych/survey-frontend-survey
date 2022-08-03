@@ -6,6 +6,9 @@
       <v-text-field
             label="Enter the question"   
         />
+      <v-select class = "dropdown" :items="types">
+        
+      </v-select>
   </v-col>
   
   
@@ -22,7 +25,7 @@ export default {
   },
   data() {
     return {
-      
+      types: ['Text answer', 'Rating question', 'Agree/Disagree question'],
     };
   },
   methods: {

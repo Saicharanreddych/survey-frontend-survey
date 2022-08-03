@@ -1,13 +1,14 @@
 
 <template>
     <h1>Create a new survey</h1>
-    <h4>{{ message }}</h4>
+    
     <v-form>
       <v-text-field label="Enter survey name" v-model="survey.surveyname"/>
       Enter number of questions:- <input type="number"
             placeholder="No of questions"
             style = "border:solid;"
             v-model="number"
+            @focus="Updated()"
         /><br><br>
         <v-btn @click="generate()">Generate</v-btn><br><br>
         <SurveyDisplay v-if="clicked"
@@ -29,7 +30,14 @@
             </v-col>
             <v-col col="2"> </v-col>
         </v-row>
-    </v-form>
+    </v-form><br>
+    <div
+        v-if="message"
+        class="alert"
+        :class="successful ? 'alert-success' : 'alert-danger'"
+      >
+        {{ message }}
+      </div>
 </template>
 <script>
 import SurveyDataService from "../services/SurveyDataService";
@@ -46,7 +54,8 @@ export default {
         id: null,
         surveyname: ""
       },
-      message: "Enter data and click save",
+      successful:false,
+      message: null,
       number:parseInt(0),
       trackingquestions:[],
       
@@ -54,6 +63,10 @@ export default {
     };
   },
   methods: {
+    Updated()
+    {
+        this.clicked = false;
+    },
     generate()
     {
         this.clicked = true;
@@ -67,20 +80,39 @@ export default {
       this.trackingquestions.splice(this.trackingquestions.indexOf(index),1);
     },
     saveSurvey() {
+      
+      if(this.survey.surveyname.length == 0)
+      {
+        this.message = "Survey name is required."
+        this.successful = false;
+        return;
+      }
+
+      else if(this.number == 0)
+      {
+        this.message = "Number of questions cannot be zero"
+        this.successful = false;
+        return;
+      }
+      
+      
       var data = {
         surveyname:this.survey.surveyname
       }
       var question = [];
+      var type = [];
       SurveyDataService.create(data)
       .then(response => {
         this.survey.id = response.data.id;
       for(var i = 1 ; i<=this.trackingquestions.length - 1;i++)
       {
         question.push(document.getElementById(this.trackingquestions[i]).getElementsByTagName("input")[0].value);
+        type.push(document.querySelectorAll(".v-select__selection-text")[i-1].innerText);
       }
       
       var data ={
-        questions : JSON.stringify(question)
+        questions : JSON.stringify(question),
+        types:JSON.stringify(type)
       }
       SurveyDataService.insertquestions(data,this.survey.id)
       .then(response =>{

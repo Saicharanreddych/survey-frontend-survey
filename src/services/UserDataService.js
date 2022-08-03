@@ -15,5 +15,11 @@ class UserDataService{
     findByName(name) {
         return http.get(`/surveys/users/all?name=${name}`);
       }
+    getUser(id){
+        return http.get(`surveys/user/${id}`);
+    }
+    update(id,data){
+        return http.put(`surveys/user/${id}`,data);
+    }
 }
 export default new UserDataService();

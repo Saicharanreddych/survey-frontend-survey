@@ -1,4 +1,3 @@
-
 import { createWebHistory, createRouter } from "vue-router";
 import Home from "./components/Home.vue";
 import Login from "./components/Login.vue";
@@ -9,6 +8,12 @@ import AddSurvey from "./views/AddSurvey.vue"
 import EditSurvey from "./views/EditSurvey.vue"
 import ViewSurvey from "./views/ViewSurvey.vue"
 import AddUser from "./views/AddUser.vue"
+import ViewUser from "./views/ViewUser.vue"
+import UserView from "./views/UserView.vue"
+import AssignSurvey from "./views/AssignSurvey.vue"
+import RetrieveSurvey from "./views/RetrieveSurvey.vue"
+import EditUser from "./views/EditUser.vue"
+import EditAdmin from "./views/EditAdmin.vue"
 // lazy-loaded
 const Profile = () => import("./components/Profile.vue")
 const Admin = () => import("./components/Admin.vue")
@@ -76,6 +81,41 @@ const routes = [
     component: AddUser,
   },
 
+  {
+    path: "/viewuser",
+    name: "viewuser",
+    component: ViewUser,
+  },
+
+  {
+    path: "/assignsurvey",
+    name: "assignsurvey",
+    component: AssignSurvey,
+  },
+  {
+    path: "/user",
+    name: "user",
+    component: UserView,
+  },
+
+  {
+    path: "/retrievesurvey",
+    name: "retrievesurvey",
+    component: RetrieveSurvey,
+  },
+
+  {
+    path: "/edituser",
+    name: "edituser",
+    component: EditUser,
+  },
+
+  {
+    path: "/editadmin",
+    name: "editadmin",
+    component: EditAdmin,
+  },
+
   
 ];
 
@@ -84,7 +124,4 @@ const router = createRouter({
   routes,
 });
 
-
-
 export default router;
-

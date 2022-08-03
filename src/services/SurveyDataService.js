@@ -1,4 +1,3 @@
-
 import http from "../http-common";
 class SurveyDataService{
     create(data)
@@ -9,7 +8,15 @@ class SurveyDataService{
     {
         return http.post(`/surveys/insert/${surveyid}`,data);
     }
-    get(id) {
+    insertanswers(data)
+    {
+        return http.post(`/surveys/insertanswers`,data);
+    }
+    insertresponse(data)
+    {
+        return http.post(`/surveys/insertresponse`,data);
+    }
+    getSurvey(id) {
         return http.get(`/surveys/${id}`);
       }
     getAllQuestions(id) {
@@ -32,6 +39,15 @@ class SurveyDataService{
 
     findByName(name) {
         return http.get(`/surveys/getsurveys?name=${name}`);
+      }
+      assignSurvey(data) {
+        return http.post(`/surveys/assign`,data);
+      }
+      getAssigned(userid) {
+        return http.get(`/surveys/assign/${userid}`);
+      }
+      getAnswers(questionid,userid) {
+        return http.get(`/surveys/answer/${questionid}/${userid}`);
       }
 }
 export default new SurveyDataService();

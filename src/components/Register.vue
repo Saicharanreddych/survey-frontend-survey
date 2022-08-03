@@ -113,6 +113,8 @@ export default {
       {
         user.roles = "admin";
       }
+
+      user.roles = "user";
       this.message = "";
       this.successful = false;
       this.loading = true;
@@ -137,7 +139,7 @@ export default {
     },
     checkAdmin(){
       UserDataService.check().then(response =>{
-        console.log(this.response);
+        
         this.Admin = true;
       })
       .catch( e =>{

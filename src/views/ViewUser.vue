@@ -11,7 +11,10 @@
             <span class="text-h6">Question</span>
         </v-col>
        
-        
+        <v-col  cols="8"
+              sm="1">
+            <span class="text-h6">Edit</span>
+        </v-col>
         <v-col  cols="8"
               sm="1">
             <span class="text-h6">Delete</span>
@@ -22,9 +25,8 @@
         :key="question.id"
         :question="question"
         @deleteQuestion="goDeleteQuestion(question)"
-        
-    /><br>
-    <v-btn @click="back()">Back</v-btn>
+        @updateQuestion="goEditQuestion(question)"
+    />
 
    
 </template>
@@ -42,7 +44,7 @@ export default {
     return {
       survey: {},
       questions : [],
-      message: "Questions can be deleted if needed."
+      message: "Edit or Delete questions"
     };
   },
   methods: {
@@ -63,6 +65,9 @@ export default {
         });
     },
      
+    goEditQuestion(question) {
+      this.$router.push({ name: 'editQuestion', params: { Id: question.id} });
+    },
     
     goDeleteQuestion(question) {
       SurveyDataService.deleteQuestion(question.id)
@@ -73,9 +78,9 @@ export default {
           this.message = e.response.data.message;
         });
     },
-    back(){
-        this.$router.push({ name: 'survey' });
-    },
+    cancel(){
+        this.$router.push({ name: 'tutorials' });
+    }
   },
     mounted() {
     this.retrieveSurveyQuestions();
