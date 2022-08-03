@@ -1,33 +1,24 @@
 <template>
-    <h2>Survey View</h2>
-    <h4>{{ message }}</h4><br>
-    <h3> Survey Name : {{survey.surveyname}}</h3>
-    
-     
-
-     <v-row>
-        <v-col  cols="8"
-              sm="2">
-            <span class="text-h6">Question</span>
-        </v-col>
-       
-        <v-col  cols="8"
-              sm="1">
-            <span class="text-h6">Edit</span>
-        </v-col>
-        <v-col  cols="8"
-              sm="1">
-            <span class="text-h6">Delete</span>
-        </v-col>
-      </v-row>
-      <QuestionDisplay
-        v-for="question in questions"
-        :key="question.id"
-        :question="question"
-        @deleteQuestion="goDeleteQuestion(question)"
-        @updateQuestion="goEditQuestion(question)"
-    />
-
+    <table>
+      <thead>
+        <th>Survey name</th>
+        <th>Status</th>
+        <th>Action</th>
+      </thead>
+      <tbody>
+        <tr v-for="survey in surveys">
+        <td>{{survey.surveyname}}</td>
+        <td v-if="survey.status">User responded</td>
+        <td v-if="survey.status"><v-btn @click="userResponse(survey)">View Response</v-btn></td>
+        <td v-if="!survey.status">User did not <br>responded yet</td>
+        <td v-if="!survey.status">No action can be performed</td>
+        </tr>
+      </tbody>
+    </table>
+    <p>{{message}}</p><br>
+    <v-btn @click="back()">
+      Back
+    </v-btn>
    
 </template>
 <script>
@@ -42,48 +33,53 @@ export default {
     },
   data() {
     return {
-      survey: {},
+      surveys: [],
       questions : [],
-      message: "Edit or Delete questions"
+      userid : null,
+      message: null
     };
   },
   methods: {
-    retrieveSurveyQuestions() {
-      var surveyid = this.$route.params.id;
-      SurveyDataService.getSurvey(surveyid)
-        .then(response => {
-          this.survey= response.data;
-          SurveyDataService.getAllQuestions(surveyid)
-            .then(response=> {
-              this.questions = response.data})
-            .catch(e => {
-                this.message = e.response.data.message;
-              });
-            })
-        .catch(e => {
-          this.message = e.response.data.message;
-        });
+    async retrieveAssignedSurveys() {
+      this.userid = this.$route.params.id;
+      var surveyids = await SurveyDataService.getAssigned(this.userid);
+
+      if(surveyids.data.length==0)
+      {
+          this.message = "No surveys assigned";
+      }
+      
+      for(var i = 0; i<surveyids.data.length;i++)
+      {
+        var survey = await SurveyDataService.getSurvey(surveyids.data[i].surveyId);
+        var questions = await SurveyDataService.getAllQuestions(surveyids.data[i].surveyId);
+        console.log(questions.data);
+
+        var answer = await SurveyDataService.getAnswers(questions.data[0].id,this.userid);
+        this.surveys.push(survey.data);
+        if(answer.data.length)
+        {
+           this.surveys[i].status = true
+        }
+        else
+        {
+           this.surveys[i].status = false
+        }
+      }
+    },
+
+    userResponse(survey)
+    {
+      this.$router.push({name:'viewresponse',params:{id:survey.id, userid:this.userid}});
     },
      
-    goEditQuestion(question) {
-      this.$router.push({ name: 'editQuestion', params: { Id: question.id} });
-    },
     
-    goDeleteQuestion(question) {
-      SurveyDataService.deleteQuestion(question.id)
-        .then( () => {
-          this.retrieveSurveyQuestions()
-        })
-        .catch(e => {
-          this.message = e.response.data.message;
-        });
-    },
-    cancel(){
-        this.$router.push({ name: 'tutorials' });
+    back(){
+        this.$router.push({ name: 'userOp' });
     }
   },
-    mounted() {
-    this.retrieveSurveyQuestions();
+    async mounted() {
+    await this.retrieveAssignedSurveys();
   }
 }
 </script>

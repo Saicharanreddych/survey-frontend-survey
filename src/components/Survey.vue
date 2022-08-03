@@ -43,9 +43,7 @@
  <v-btn  @click="createSurvey">
     Add a Survey
   </v-btn>&nbsp;
-  <v-btn  @click="removeAllSurveys">
-    Remove All
-  </v-btn>
+  
   &nbsp;
   <v-btn  @click="back()">
     Back
@@ -62,6 +60,8 @@ export default {
   data() {
     return {
       surveys: [],
+      questions:[],
+      answers:[],
       currentSurvey: null,
       currentIndex: -1,
       name: "",
@@ -78,16 +78,27 @@ export default {
     goView(survey) {
       this.$router.push({ name: 'view', params: { id: survey.id } });
     },
-    goDelete(survey) {
-      SurveyDataService.delete(survey.id)
-        .then( () => {
-          this.retrieveSurveys()
-          SurveyDataService.deleteQuestions(survey.id)
-          .then(() =>{})
-        })
-        .catch(e => {
-          this.message = e.response.data.message;
-        });
+    async goDelete(survey) {
+      var answerids = [];
+      var questions = await SurveyDataService.getAllQuestions(survey.id)
+      this.questions = questions.data;
+      
+      for(var i=0;i<this.questions.length;i++)
+      {
+        
+        var answer = await SurveyDataService.getAnswer(this.questions[i].id);
+        this.answers = answer.data;
+        for(var j= 0;j<this.answers.length;j++)
+        {
+          await SurveyDataService.deleteUserResponse(this.answers[j].id);
+        }
+        await SurveyDataService.deleteAnswers(this.questions[i].id);
+      }
+      await SurveyDataService.delete(survey.id)
+      await SurveyDataService.deleteQuestions(survey.id)
+      await SurveyDataService.deleteAssignedSurveys(survey.id);  
+      this.retrieveSurveys();   
+           
     },
     back()
     {
@@ -114,16 +125,6 @@ export default {
     setActiveSurvey(survey, index) {
       this.currentSurvey = survey;
       this.currentIndex = survey ? index : -1;
-    },
-    removeAllSurveys() {
-      SurveyDataService.deleteAll()
-        .then(response => {
-          console.log(response.data);
-          this.refreshList();
-        })
-        .catch(e => {
-          this.message = e.response.data.message;
-        });
     },
     
     searchSurvey() {

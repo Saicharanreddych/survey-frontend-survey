@@ -38,14 +38,12 @@ export default {
     edit()
     {
       var userid = JSON.parse(localStorage.getItem("user")).id;
-      
       this.$router.push({name:"edituser",params: { id:userid }});
     },
 
     editadmin()
     {
       var adminid = JSON.parse(localStorage.getItem("user")).id;
-      
       this.$router.push({name:"editadmin",params: { id:adminid }});
     },
     

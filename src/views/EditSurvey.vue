@@ -65,6 +65,10 @@ export default {
   },
     mounted() {
     this.retrieveSurvey();
+    if(this.$route.params.id == undefined)
+    {
+      this.$router.push({name:'survey'});
+    }
   }
 }
 

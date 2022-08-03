@@ -2,7 +2,7 @@
   <div class="container">
     <br>
     <h4>{{message}}</h4>
-    <table>
+    <table v-if="tablestatus">
         <thead>
             <tr>
                 <th>Survey name</th>
@@ -12,16 +12,16 @@
         <tbody>
             <tr v-for = "survey in surveys">
                 <td>{{survey.surveyname}}</td>
-                <td v-if="survey.status">
+                <td v-if="!survey.status">
                   <v-btn @click="submitSurvey(survey.id)">Take this survey</v-btn>
                 </td>
-                <td v-if="!survey.status">
+                <td v-if="survey.status">
                   Already submitted.
                 </td>
             </tr>
         </tbody>
-    </table>
-
+    </table><br>
+    <v-btn @click="back()">Back</v-btn>
 
    
   </div>
@@ -41,13 +41,11 @@ export default {
       surveys: {
         
       },
-      sample:[],
+      
       answers:[],
       questions :[],
-      currentSurvey: null,
-      currentIndex: -1,
-      name: "",
       message : "Survey List",
+      tablestatus: true,
       selected:[],
       isCheckAll: false
     };
@@ -57,10 +55,8 @@ export default {
     
 },
   methods: {
-    
-
     back(){
-     this.$router.push({ name: 'userOp' });
+     this.$router.push({ name: 'profile' });
     },
     
     submitSurvey(surveyid)
@@ -68,10 +64,15 @@ export default {
       this.$router.push({name:'retrievesurvey',params:{id:surveyid,userid:this.$route.params.userid}});
     },
     
-    
     async retrieveSurveys() {
         var userid = this.$route.params.userid;
         var response = await SurveyDataService.getAssigned(userid);
+        if(response.data.length==0)
+        {
+          this.message = "No surveys assigned";
+          this.tablestatus = false;
+          return;
+        }
         for(var i = 0; i< response.data.length;i++)
         {
            var survey = await SurveyDataService.getSurvey(response.data[i].surveyId);
@@ -81,21 +82,24 @@ export default {
            }
            else
            {
-              console.log(userid);
+              
               this.surveys[i] = survey.data;
               this.questions = await SurveyDataService.getAllQuestions(this.surveys[i].id); 
+              
               this.answers = await SurveyDataService.getAnswers(this.questions.data[0].id,userid);
-              console.log(this.answers.data);
-              if(this.answers.data.length == 0)
+              
+              if(this.answers.data.message)
               {
-                this.surveys[i].status  = true;
+                this.surveys[i].status  = false;
               }
               else
               {
-                this.surveys[i].status = false;
-              }  
+               
+                this.surveys[i].status = true;
+                
+              }
+                
            }
-          
         }
           
         },

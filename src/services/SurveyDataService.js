@@ -49,5 +49,27 @@ class SurveyDataService{
       getAnswers(questionid,userid) {
         return http.get(`/surveys/answer/${questionid}/${userid}`);
       }
+      getAnswer(questionid,userid) {
+        return http.get(`/surveys/singleanswer/${questionid}`);
+      }
+      getUserResponses(userid){
+        return http.get(`/surveys/getuserresponse/${userid}`);
+      }
+      deleteAssignedSurveys(id)
+      {
+        return http.delete(`surveys/assignedsurveys/${id}`);
+      }
+      deleteAnswers(id)
+      {
+        return http.delete(`surveys/deleteanswers/${id}`);
+      }
+      deleteAnswer(answerid)
+      {
+        return http.delete(`surveys/deleteanswer/${answerid}`);
+      }
+      deleteUserResponse(id)
+      {
+        return http.delete(`surveys/deleteuserresponse/${id}`);
+      }
 }
 export default new SurveyDataService();

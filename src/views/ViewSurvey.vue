@@ -1,6 +1,6 @@
 <template>
     <h2>Survey View</h2>
-    <h4>{{ message }}</h4><br>
+    
     <h3> Survey Name : {{survey.surveyname}}</h3>
     
      
@@ -10,19 +10,12 @@
               sm="2">
             <span class="text-h6">Question</span>
         </v-col>
-       
-        
-        <v-col  cols="8"
-              sm="1">
-            <span class="text-h6">Delete</span>
-        </v-col>
+  
       </v-row>
       <QuestionDisplay
         v-for="question in questions"
         :key="question.id"
         :question="question"
-        @deleteQuestion="goDeleteQuestion(question)"
-        
     /><br>
     <v-btn @click="back()">Back</v-btn>
 
@@ -42,7 +35,7 @@ export default {
     return {
       survey: {},
       questions : [],
-      message: "Questions can be deleted if needed."
+      
     };
   },
   methods: {
@@ -62,22 +55,16 @@ export default {
           this.message = e.response.data.message;
         });
     },
-     
-    
-    goDeleteQuestion(question) {
-      SurveyDataService.deleteQuestion(question.id)
-        .then( () => {
-          this.retrieveSurveyQuestions()
-        })
-        .catch(e => {
-          this.message = e.response.data.message;
-        });
-    },
+  
     back(){
         this.$router.push({ name: 'survey' });
     },
   },
     mounted() {
+    if(this.$route.params.id==undefined)
+    {
+      this.$router.push({name:'survey'});
+    }
     this.retrieveSurveyQuestions();
   }
 }

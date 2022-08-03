@@ -21,5 +21,8 @@ class UserDataService{
     update(id,data){
         return http.put(`surveys/user/${id}`,data);
     }
+    delete(id){
+        return http.delete(`surveys/user/${id}`);
+    }
 }
 export default new UserDataService();
