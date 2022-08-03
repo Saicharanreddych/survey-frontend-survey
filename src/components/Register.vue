@@ -113,8 +113,12 @@ export default {
       {
         user.roles = "admin";
       }
+      else
+      {
+        user.roles = "user";
+      }
 
-      user.roles = "user";
+      
       this.message = "";
       this.successful = false;
       this.loading = true;
