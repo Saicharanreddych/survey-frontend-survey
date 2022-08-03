@@ -1,4 +1,3 @@
-
 import http from "../http-common";
 class SurveyDataService{
     create(data)
@@ -20,6 +19,13 @@ class SurveyDataService{
         return http.get("/surveys/getsurveys");
     }
    
+      delete(id) {
+        return http.delete(`/surveys/${id}`);
+      }
+
+      deleteQuestions(id) {
+        return http.delete(`/surveys/questions/${id}`);
+      }
 
     findByName(name) {
         return http.get(`/surveys/getsurveys?name=${name}`);
